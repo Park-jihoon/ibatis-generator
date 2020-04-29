@@ -27,16 +27,12 @@ public class GenRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         List<String> tableNames = Arrays.asList(
-            "CLL_AGREE_STORAGE",
-            "CLL_AUTO_ACNT",
-            "CLL_CAR_MST",
-            "CLL_CONT_CAR_DTL",
-            "CLL_CONT_LEA_MM",
-            "CLL_CONT_LEA_MPAY",
-            "CLL_CONT_LEVYEXP",
-            "CLL_CONTRACT",
-            "CLL_CONTRACT_FILE",
-            "CLL_VIRTUAL_ACNT"
+            "CLS_CAR_MST",
+            "CLS_CONT_CAR_DTL",
+            "CLS_CONTRACT",
+            "CLS_CONTRACT_FILE",
+            "CLS_CONTRACTOR",
+            "CLS_SUBPLC_MST"
         );
         generateXmlFiles(tableNames);
         generateJavaFiles(tableNames);

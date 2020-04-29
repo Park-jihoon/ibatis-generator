@@ -33,7 +33,10 @@ public class GenXml {
             "<typeAlias alias=\"egovMap\" type=\"egovframework.rte.psl.dataaccess.util.EgovMap\"/>\n"
             + "<typeAlias alias=\""
             + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, tableName) + "VO"
-            + "\" type=\"com.jitpower.pms.nis.cll.cmm."
+            + "\" type=\"com.jitpower.pms.nis."
+            + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, tableName).substring(0, 3)
+            .toLowerCase()
+            + ".cmm."
             + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, tableName).substring(3)
             .toLowerCase()
             + "." + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "VO\"/>\n"
