@@ -32,6 +32,12 @@ private final String defaultPath = "D:/gen";
 
 - 빌드 후 실행합니다.
 
+## 실행 결과
+
+- 지정한 폴더 하부에는 `java`, `xml` 퐇더가 생성됩니다.
+- xml 폴더 내부에는 sqlMap 이 생성됩니다.
+- java 폴더 내부에는 각 테이블 별 Dao, Service, ServiceImpl, VO 가 생성됩니다.
+
 ## 소스에 포함되지 못한 필요 Class 정리
 
 `NisDefaultService.java`
