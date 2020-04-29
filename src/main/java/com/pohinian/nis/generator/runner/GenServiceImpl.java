@@ -6,7 +6,7 @@ import lombok.experimental.UtilityClass;
 public class GenServiceImpl extends AbstractGenJava {
     public String makeJava(String tableName) {
         String cllAgreeStorage = genClassNamePreFix(tableName);
-        return genPackageName(tableName)
+        return genPackageName(tableName) + "\n"
             + "import com.fasterxml.jackson.databind.ObjectMapper;\n"
             + "import java.util.Map;\n"
             + "import javax.validation.Valid;\n"

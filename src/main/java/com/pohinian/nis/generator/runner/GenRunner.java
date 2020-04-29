@@ -27,11 +27,15 @@ public class GenRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         List<String> tableNames = Arrays.asList(
+            "CLL_AGREE_STORAGE",
+            "CLL_AUTO_ACNT",
+            "CLL_CAR_MST",
+            "CLL_CONT_CAR_DTL",
             "CLL_CONT_LEA_MM",
             "CLL_CONT_LEA_MPAY",
+            "CLL_CONT_LEVYEXP",
             "CLL_CONTRACT",
             "CLL_CONTRACT_FILE",
-            "CLL_CONTRACTOR",
             "CLL_VIRTUAL_ACNT"
         );
         generateXmlFiles(tableNames);
@@ -51,12 +55,18 @@ public class GenRunner implements CommandLineRunner {
         String serviceImpl = GenServiceImpl.makeJava(tableName);
         String voStr = GenVo.makeJava(tableName, pkList, colList);
 
-        Path javaDir = Paths.get(defaultPath + "/java/" + tableName.substring(0, 3).toLowerCase() + "/cmm/"
-        + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, tableName).substring(3).toLowerCase());
-        String daoFileName = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "Dao.java";
-        String serviceFileName = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "Service.java";
-        String implFileName = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "ServiceImpl.java";
-        String voFileName = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "VO.java";
+        Path javaDir =
+            Paths.get(defaultPath + "/java/" + tableName.substring(0, 3).toLowerCase() + "/cmm/"
+                + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, tableName).substring(3)
+                .toLowerCase());
+        String daoFileName =
+            CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "Dao.java";
+        String serviceFileName =
+            CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "Service.java";
+        String implFileName =
+            CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "ServiceImpl.java";
+        String voFileName =
+            CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "VO.java";
         try {
             if (!Files.isDirectory(javaDir)) {
                 javaDir = Files.createDirectories(javaDir);
@@ -92,7 +102,7 @@ public class GenRunner implements CommandLineRunner {
             CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, tableName) + ".xml";
         try {
             if (!Files.isDirectory(xmlDir)) {
-                xmlDir = Files.createDirectory(xmlDir);
+                xmlDir = Files.createDirectories(xmlDir);
             }
             Path xmlFilePath = xmlDir.resolve(fileName);
             Files.deleteIfExists(xmlFilePath);

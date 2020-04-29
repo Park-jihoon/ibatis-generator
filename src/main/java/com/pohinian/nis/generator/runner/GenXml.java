@@ -50,7 +50,7 @@ public class GenXml {
             + "DAO.delete\" parameterClass=\""
             + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, tableName) + "VO\">\n"
             + "DELETE FROM " + tableName + " \n"
-            + makeWhere(pkList) + " \n"
+            + " WHERE " + makeWhere(pkList) + " \n"
             + "</delete>";
     }
 
@@ -91,8 +91,7 @@ public class GenXml {
             + "SELECT "
             + makeSelectCol(colList) + "\n"
             + " FROM " + tableName + "\n"
-            + " WHERE 1 = 1 \n"
-            + makeWhere(pkList) + " \n"
+            + " WHERE " + makeWhere(pkList) + " \n"
             + "</select>";
     }
 
@@ -106,8 +105,8 @@ public class GenXml {
             .map(m -> {
                 String c = (String) m.get(COLUMN_NAME);
                 String cc = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, c);
-                return " AND " + c + " = #" + cc + "# ";
-            }).collect(Collectors.joining("\n"));
+                return c + " = #" + cc + "# ";
+            }).collect(Collectors.joining("\nAND "));
     }
 
     private String makeUpdateCol(List<Map<String, Object>> colList) {
@@ -128,8 +127,7 @@ public class GenXml {
             + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, tableName) + "VO\">\n"
             + "UPDATE " + tableName + "\n"
             + "SET " + makeUpdateCol(colList) + "\n"
-            + "WHERE 1 = 1 \n"
-            + makeWhere(pkList) + " \n"
+            + "WHERE " + makeWhere(pkList) + " \n"
             + "</update>";
 
     }
