@@ -13,6 +13,25 @@ spring.datasource.username=user
 spring.datasource.password=password
 ```
 
+## 작동방법
+
+- `GenRunner.java`의 `run` 내부에 `tableNames` 를 지정합니다.
+
+```java
+List<String> tableNames = Arrays.asList(
+    "CLL_CONT_LEA_MM",
+    "CLL_CONT_LEA_MPAY",
+);
+```
+
+- `GenRunner.java`의 상단에 `defaultPath`를 선언합니다.
+
+```java
+private final String defaultPath = "D:/gen";
+```
+
+- 빌드 후 실행합니다.
+
 ## 소스에 포함되지 못한 필요 Class 정리
 
 `NisDefaultService.java`
