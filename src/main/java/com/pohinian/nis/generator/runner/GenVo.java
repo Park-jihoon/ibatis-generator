@@ -27,7 +27,7 @@ public class GenVo extends AbstractGenJava {
             + "@EqualsAndHashCode(callSuper = true)\n"
             + "public class " + cllAgreeStorage + "VO extends NisDefaultVO {\n"
             + "    private static final long serialVersionUID = 1L;\n"
-            + makeVoField(pkList, colList) + ";\n"
+            + makeVoField(pkList, colList) + ";\n\n"
             + "    @Override\n"
             + "    public String genCacheKey() {\n"
             + "        return " + makeGenCacheKey(pkList) + ";\n"
