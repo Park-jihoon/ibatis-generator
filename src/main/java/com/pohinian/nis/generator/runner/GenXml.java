@@ -90,7 +90,8 @@ public class GenXml {
                               List<Map<String, Object>> colList) {
         return "<select id=\""
             + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName)
-            + "DAO.find\" resultClass=\"egovMap\" parameterClass=\"java.util.Map\"> \n"
+            + "DAO.find\" resultClass=\"egovMap\" parameterClass=\""
+            + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, tableName) + "VO\">\n"
             + "SELECT "
             + makeSelectCol(colList) + "\n"
             + " FROM " + tableName + "\n"
