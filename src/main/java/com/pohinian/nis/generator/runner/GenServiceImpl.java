@@ -30,7 +30,8 @@ public class GenServiceImpl extends AbstractGenJava {
             + "\n"
             + "    @Override\n"
             + "    @Cacheable(value = \"" + lowerCamelName
-            + "\", key = \"#entity?.genCacheKey()\", unless = \"#result == null\")\n"
+            + "\", key = \"#entity?.genCacheKey()\", \n"
+            + "        unless = \"#result == null\")\n"
             + "    public " + upperCamelName + "VO find(@Valid " + upperCamelName + "VO entity) {\n"
             + "        ObjectMapper mapper = new ObjectMapper();\n"
             + "        return mapper.convertValue(dao.select(QUERY_ID + \".find\", entity), "
@@ -38,22 +39,22 @@ public class GenServiceImpl extends AbstractGenJava {
             + "    }\n"
             + "\n"
             + "    @Override\n"
-            + "    @CacheEvict(value = \"" + lowerCamelName +
-            "\", key = \"#entity?.genCacheKey()\")\n"
+            + "    @CacheEvict(value = \"" + lowerCamelName
+            + "\", key = \"#entity?.genCacheKey()\")\n"
             + "    public Object insert(@Valid " + upperCamelName + "VO entity) {\n"
             + "        return dao.insert(QUERY_ID + \".insert\", entity);\n"
             + "    }\n"
             + "\n"
             + "    @Override\n"
-            + "    @CacheEvict(value = \"" + lowerCamelName +
-            "\", key = \"#entity?.genCacheKey()\")\n"
+            + "    @CacheEvict(value = \"" + lowerCamelName
+            + "\", key = \"#entity?.genCacheKey()\")\n"
             + "    public Object update(@Valid " + upperCamelName + "VO entity) {\n"
             + "        return dao.update(QUERY_ID + \".update\", entity);\n"
             + "    }\n"
             + "\n"
             + "    @Override\n"
-            + "    @CacheEvict(value = \"" + lowerCamelName +
-            "\", key = \"#entity?.genCacheKey()\")\n"
+            + "    @CacheEvict(value = \"" + lowerCamelName
+            + "\", key = \"#entity?.genCacheKey()\")\n"
             + "    public int delete(@Valid " + upperCamelName + "VO entity) {\n"
             + "        return dao.delete(QUERY_ID + \".delete\", entity);\n"
             + "    }\n"
