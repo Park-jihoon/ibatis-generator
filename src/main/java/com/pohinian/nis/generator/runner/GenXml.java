@@ -82,7 +82,7 @@ public class GenXml {
                     c = CaseFormat.UPPER_UNDERSCORE
                         .to(CaseFormat.LOWER_CAMEL, c);
                 }
-                return "#" + c + "#";
+                return "regDt".equalsIgnoreCase(c) ? "sysdate" : "#" + c + "#";
             }).collect(Collectors.joining(",\n"));
     }
 
@@ -91,17 +91,30 @@ public class GenXml {
         return "<select id=\""
             + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName)
             + "DAO.find\" resultClass=\"egovMap\" parameterClass=\""
-            + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, tableName) + "VO\">\n"
+            + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, tableName) + "VO\"><![CDATA[\n"
             + "SELECT "
             + makeSelectCol(colList) + "\n"
             + " FROM " + tableName + "\n"
-            + " WHERE " + makeWhere(pkList) + " \n"
+            + "]]>" + makeSelectWhere(pkList) + " \n"
             + "</select>";
     }
 
     private String makeSelectCol(List<Map<String, Object>> colList) {
         return colList.stream()
             .map(m -> (String) m.get(COLUMN_NAME)).collect(Collectors.joining(",\n"));
+    }
+
+    private String makeSelectWhere(List<Map<String, Object>> pkList) {
+        return "<dynamic prepend=\"WHERE\">\n"
+            + pkList.stream()
+            .map(m -> {
+                String c = (String) m.get(COLUMN_NAME);
+                String cc = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, c);
+                return "<isNotEmpty property=\"" + cc + "\" prepend=\"AND\">\n"
+                    + c + " = #" + cc + "# "
+                    + "</isNotEmpty>\n";
+            }).collect(Collectors.joining("\n"))
+            + "\n</dynamic>";
     }
 
     private String makeWhere(List<Map<String, Object>> pkList) {
@@ -120,7 +133,7 @@ public class GenXml {
             .map(m -> {
                 String c = (String) m.get(COLUMN_NAME);
                 String cc = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, c);
-                return " " + c + " = #" + cc + "#";
+                return "chgDt".equalsIgnoreCase(cc) ? c + " = " + "sysdate" : c + " = #" + cc + "#";
             }).collect(Collectors.joining(",\n"));
     }
 

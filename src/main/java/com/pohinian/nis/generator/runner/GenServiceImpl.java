@@ -32,7 +32,7 @@ public class GenServiceImpl extends AbstractGenJava {
             + "    @Cacheable(value = \"" + lowerCamelName
             + "\", key = \"#entity?.genCacheKey()\", \n"
             + "        unless = \"#result == null\")\n"
-            + "    public " + upperCamelName + "VO find(@Valid " + upperCamelName + "VO entity) {\n"
+            + "    public " + upperCamelName + "VO find(" + upperCamelName + "VO entity) {\n"
             + "        ObjectMapper mapper = new ObjectMapper();\n"
             + "        return mapper.convertValue(dao.select(QUERY_ID + \".find\", entity), "
             + upperCamelName + "VO.class);\n"
