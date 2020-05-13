@@ -1,12 +1,13 @@
 package com.pohinian.nis.generator.runner;
 
+import lombok.experimental.UtilityClass;
+import org.python.google.common.base.CaseFormat;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import lombok.experimental.UtilityClass;
-import org.python.google.common.base.CaseFormat;
 
 @UtilityClass
 public class GenVo extends AbstractGenJava {
@@ -15,24 +16,25 @@ public class GenVo extends AbstractGenJava {
                            List<Map<String, Object>> colList) {
         String cllAgreeStorage = genClassNamePreFix(tableName);
         return genPackageName(tableName)
-            + "import com.jitpower.pms.nis.cll.NisDefaultVO;\n"
-            + "import javax.validation.constraints.NotBlank;\n"
-            + "import java.util.Date;\n"
-            + "import lombok.Data;\n"
-            + "import lombok.EqualsAndHashCode;\n"
-            + "import lombok.NoArgsConstructor;\n"
-            + "\n"
-            + "@Data\n"
-            + "@NoArgsConstructor\n"
-            + "@EqualsAndHashCode(callSuper = true)\n"
-            + "public class " + cllAgreeStorage + "VO extends NisDefaultVO {\n"
-            + "    private static final long serialVersionUID = 1L;\n"
-            + makeVoField(pkList, colList) + ";\n\n"
-            + "    @Override\n"
-            + "    public String genCacheKey() {\n"
-            + "        return " + makeGenCacheKey(pkList) + ";\n"
-            + "    }\n"
-            + "}";
+                + "import com.jitpower.pms.nis.cll.NisDefaultVO;\n"
+                + "import javax.validation.constraints.NotBlank;\n"
+                + "import javax.validation.constraints.NotNull;\n"
+                + "import java.util.Date;\n"
+                + "import lombok.Data;\n"
+                + "import lombok.EqualsAndHashCode;\n"
+                + "import lombok.NoArgsConstructor;\n"
+                + "\n"
+                + "@Data\n"
+                + "@NoArgsConstructor\n"
+                + "@EqualsAndHashCode(callSuper = true)\n"
+                + "public class " + cllAgreeStorage + "VO extends NisDefaultVO {\n"
+                + "    private static final long serialVersionUID = 1L;\n"
+                + makeVoField(pkList, colList) + ";\n\n"
+                + "    @Override\n"
+                + "    public String genCacheKey() {\n"
+                + "        return " + makeGenCacheKey(pkList) + ";\n"
+                + "    }\n"
+                + "}";
     }
 
     private String makeGenCacheKey(List<Map<String, Object>> pkList) {
@@ -55,17 +57,21 @@ public class GenVo extends AbstractGenJava {
                 String finalC = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, c);
                 String dataType = genDataType(m);
                 String reStr = "    private " + dataType + " " + finalC;
-                reStr = getNotNull(pkList, n, c, reStr);
+                reStr = getNotNull(pkList, n, c, reStr, dataType);
                 return reStr;
             }).collect(Collectors.joining(";\n"));
     }
 
     private String getNotNull(List<Map<String, Object>> pkList, String n, String c,
-                              String reStr) {
+                              String reStr, String dataType) {
         if (pkList.stream().anyMatch(
-            pm -> c.equalsIgnoreCase((String) pm.get("COLUMN_NAME")))
-            || "N".equalsIgnoreCase(n)) {
-            reStr = "    @NotBlank\n" + reStr;
+                pm -> c.equalsIgnoreCase((String) pm.get("COLUMN_NAME")))
+                || "N".equalsIgnoreCase(n)) {
+            if ("Integer".equals(dataType) || "Double".equals(dataType)) {
+                reStr = "    @NotNull\n" + reStr;
+            } else {
+                reStr = "    @NotBlank\n" + reStr;
+            }
         }
         return reStr;
     }
