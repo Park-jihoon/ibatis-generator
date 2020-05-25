@@ -18,9 +18,8 @@ import java.util.stream.Collectors;
 @Component
 @Slf4j
 public class GenRunner implements CommandLineRunner {
-    private final JdbcTemplate jdbcTemplate;
-
     private static final String DEFAULT_PATH = "D:/project/NIS_PIMS/workspace/nis-pms-boot/src/main";
+    private final JdbcTemplate jdbcTemplate;
 
     public GenRunner(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -32,32 +31,33 @@ public class GenRunner implements CommandLineRunner {
 //                "CLL_AGREE_STORAGE",
 //                "CLL_AUTO_ACNT",
 //                "CLL_CAR_MST",
-                "CLL_CONT_CAR_INFOR",
-                "CLL_CONT_CARINFOR_DTL",
-//                "CLL_CONT_CAR_DTL",
+//                "CLL_CONT_CAR_INFOR",
+//                "CLL_CONT_CARINFOR_DTL",
 //                "CLL_CONT_LEA_MM",
 //                "CLL_CONT_LEA_MPAY",
 //                "CLL_CONT_LEALEVY_MM",
 //                "CLL_CONT_LEALEVY_MPAY",
-//                "CLL_CONT_LEALEVY_MST"
+//                "CLL_CONT_LEALEVY_MST",
 //                "CLL_CONT_LEVYEXP",
+//                "CLL_CONT_RNTL_INFOR",
 //                "CLL_CONTRACT_FILE",
 //                "CLL_VIRTUAL_ACNT",
-                "CLS_BAS_CARINFOR"
+                "CLS_BAS_CARDRV_INFOR"
+//                "CLS_BAS_CARINFOR",
 //                "CLS_CAR_MST",
 //                "CLS_CONT_CAR_DTL",
 //                "CLS_CONTRACT",
 //                "CLS_CONTRACT_FILE",
 //                "CLS_CONTRACTOR",
-//                "CLS_SUBPLC_MST",
+//                "CLS_SUBPLC_MST"
 
         );
         generateXmlFiles(tableNames);
         generateJavaFiles(tableNames);
 
         log.info("cacheNames : codeService,{}", tableNames.stream()
-            .map(s -> CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, s))
-            .collect(Collectors.joining(",")));
+                .map(s -> CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, s))
+                .collect(Collectors.joining(",")));
 
     }
 
@@ -80,13 +80,13 @@ public class GenRunner implements CommandLineRunner {
                         + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, tableName).substring(3)
                         .toLowerCase());
         String daoFileName =
-            CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "Dao.java";
+                CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "Dao.java";
         String serviceFileName =
-            CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "Service.java";
+                CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "Service.java";
         String implFileName =
-            CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "ServiceImpl.java";
+                CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "ServiceImpl.java";
         String voFileName =
-            CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "VO.java";
+                CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName) + "VO.java";
         try {
 //            Files.walk(javaDir)
 //                .sorted(Comparator.reverseOrder())
@@ -156,24 +156,28 @@ public class GenRunner implements CommandLineRunner {
 
 
     private List<Map<String, Object>> getColList(String tableName) {
-        String sql = "SELECT COLUMN_NAME, DATA_TYPE, DATA_PRECISION, DATA_SCALE "
-            + "FROM ALL_TAB_COLUMNS "
-            + "WHERE TABLE_NAME = '" + tableName + "' "
-            + "order by COLUMN_ID ";
+        String sql = "SELECT A.COLUMN_NAME, DATA_TYPE, DATA_PRECISION, DATA_SCALE, DATA_LENGTH, B.COMMENTS\n" +
+                "FROM ALL_TAB_COLUMNS A\n" +
+                "LEFT JOIN ALL_COL_COMMENTS B\n" +
+                "ON A.OWNER = B.OWNER\n" +
+                "AND A.TABLE_NAME = B.TABLE_NAME\n" +
+                "AND A.COLUMN_NAME = B.COLUMN_NAME\n" +
+                "WHERE A.TABLE_NAME = '" + tableName + "'\n" +
+                "order by A.COLUMN_ID ";
         return jdbcTemplate.queryForList(sql);
     }
 
 
     private List<Map<String, Object>> getPkCols(String tableName) {
         String sql = "SELECT "
-            + "       B.COLUMN_NAME      "
-            + "  FROM ALL_CONSTRAINTS  A "
-            + "     , ALL_CONS_COLUMNS B "
-            + " WHERE A.TABLE_NAME      = '" + tableName + "' "
-            + "   AND CONSTRAINT_TYPE = 'P' "
-            + "   AND A.OWNER           = B.OWNER "
-            + "   AND A.CONSTRAINT_NAME = B.CONSTRAINT_NAME "
-            + " ORDER BY B.POSITION";
+                + "       B.COLUMN_NAME      "
+                + "  FROM ALL_CONSTRAINTS  A "
+                + "     , ALL_CONS_COLUMNS B "
+                + " WHERE A.TABLE_NAME      = '" + tableName + "' "
+                + "   AND CONSTRAINT_TYPE = 'P' "
+                + "   AND A.OWNER           = B.OWNER "
+                + "   AND A.CONSTRAINT_NAME = B.CONSTRAINT_NAME "
+                + " ORDER BY B.POSITION";
         return jdbcTemplate.queryForList(sql);
     }
 
