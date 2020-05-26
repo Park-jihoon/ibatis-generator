@@ -44,10 +44,9 @@ public class GenRunner implements CommandLineRunner {
 //                "CLL_VIRTUAL_ACNT",
 //                "CLS_BAS_CARDRV_INFOR"
 //                "CLS_BAS_CARINFOR",
-                "CLS_CONT_CAR_INFOR",
-                "CLS_CONT_CARDRV_INFOR"
-//                "CLS_CAR_MST",
-//                "CLS_CONT_CAR_DTL",
+//                "CLS_CONT_CAR_INFOR",
+//                "CLS_CONT_CARDRV_INFOR"
+                "CLS_CONT_CARINFOR_DTL"
 //                "CLS_CONTRACT",
 //                "CLS_CONTRACT_FILE",
 //                "CLS_CONTRACTOR",
