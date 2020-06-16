@@ -47,7 +47,7 @@ public class GenRunner implements CommandLineRunner {
 //                "CLS_CONT_CAR_INFOR",
 //                "CLS_CONT_CARDRV_INFOR"
 //                "CLS_CONT_CARINFOR_DTL",
-                "CLS_BAS_CARSPC"
+                "CLS_AGREE_REFUND"
 //                "CLS_CONTRACT",
 //                "CLS_CONTRACT_FILE",
 //                "CLS_CONTRACTOR",
@@ -164,7 +164,7 @@ public class GenRunner implements CommandLineRunner {
                 "ON A.OWNER = B.OWNER\n" +
                 "AND A.TABLE_NAME = B.TABLE_NAME\n" +
                 "AND A.COLUMN_NAME = B.COLUMN_NAME\n" +
-                "WHERE A.TABLE_NAME = '" + tableName + "'\n" +
+                "WHERE A.TABLE_NAME = '" + tableName + "'\n AND A.OWNER = 'PMS'\n" +
                 "order by A.COLUMN_ID ";
         return jdbcTemplate.queryForList(sql);
     }
@@ -178,7 +178,7 @@ public class GenRunner implements CommandLineRunner {
                 + " WHERE A.TABLE_NAME      = '" + tableName + "' "
                 + "   AND CONSTRAINT_TYPE = 'P' "
                 + "   AND A.OWNER           = B.OWNER "
-                + "   AND A.CONSTRAINT_NAME = B.CONSTRAINT_NAME "
+                + "   AND A.CONSTRAINT_NAME = B.CONSTRAINT_NAME AND A.OWNER = 'PMS'\n"
                 + " ORDER BY B.POSITION";
         return jdbcTemplate.queryForList(sql);
     }
