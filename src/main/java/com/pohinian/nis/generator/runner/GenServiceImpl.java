@@ -48,7 +48,7 @@ public class GenServiceImpl extends AbstractGenJava {
             + "    @Override\n"
             + "    @CacheEvict(value = \"" + lowerCamelName
             + "\", key = \"#entity?.genCacheKey()\")\n"
-            + "    public Object update(@Valid " + upperCamelName + "VO entity) {\n"
+            + "    public int update(@Valid " + upperCamelName + "VO entity) {\n"
             + "        return dao.update(QUERY_ID + \".update\", entity);\n"
             + "    }\n"
             + "\n"
