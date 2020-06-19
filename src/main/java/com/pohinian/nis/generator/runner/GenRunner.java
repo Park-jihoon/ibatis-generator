@@ -47,7 +47,7 @@ public class GenRunner implements CommandLineRunner {
 //                "CLS_CONT_CAR_INFOR",
 //                "CLS_CONT_CARDRV_INFOR"
 //                "CLS_CONT_CARINFOR_DTL",
-                "CLS_AGREE_REFUND"
+                "CLS_AGREE_STORAGE"
 //                "CLS_CONTRACT",
 //                "CLS_CONTRACT_FILE",
 //                "CLS_CONTRACTOR",
