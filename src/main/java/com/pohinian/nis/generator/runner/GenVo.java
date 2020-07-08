@@ -96,7 +96,7 @@ public class GenVo extends AbstractGenJava {
                 m.get("DATA_PRECISION") == null ? 0 : ((BigDecimal) m.get("DATA_PRECISION")).intValue();
         int dataScale =
                 m.get("DATA_SCALE") == null ? 0 : ((BigDecimal) m.get("DATA_SCALE")).intValue();
-        if ("VARCHAR2".equalsIgnoreCase(dataType) || "VARCHAR".equalsIgnoreCase(dataType)) {
+        if ("VARCHAR2".equalsIgnoreCase(dataType) || "VARCHAR".equalsIgnoreCase(dataType) || "CHAR".equalsIgnoreCase(dataType)) {
             return "String";
         } else if ("DATE".equalsIgnoreCase(dataType)) {
             return "Date";
